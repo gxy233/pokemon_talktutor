@@ -3,6 +3,8 @@
         "target": "es5",
         "moduleResolution": "node",
         "lib": ["ESNext", "dom"],
+        "noImplicitAny": false,
+        "esModuleInterop": true,
     },
     "include": [
         "./src/**/*"

@@ -13,14 +13,6 @@ import { PathFinder } from "../../phaser3-rex-plugins/plugins/board-components";
 import { TileXYType } from "../../phaser3-rex-plugins/plugins/board/types/Position";
 import { shuffle } from "../../utils";
 import { COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY } from "../../constants";
-//必须引入的核心，换成require也是一样的。注意：recorder-core会自动往window下挂载名称为Recorder对象，全局可调用window.Recorder，也许可自行调整相关源码清除全局污染
-import Recorder from 'recorder-core';
-//引入相应格式支持文件；如果需要多个格式支持，把这些格式的编码引擎js文件放到后面统统引入进来即可
-import '../../../node_modules/recorder-core/src/engine/mp3';
-import '../../../node_modules/recorder-core/src/engine/mp3-engine' ;//如果此格式有额外的编码引擎（*-engine.js）的话，必须要加上
-import '../../../node_modules/recorder-core/src/extensions/waveview';
-
-
 
 export class TownScene extends Scene {
   private timeFrame: number = 0;
@@ -270,7 +262,6 @@ export class TownScene extends Scene {
 
   createInputBox(npc: Physics.Arcade.Sprite) {
     this.disableKeyboard();
-
     var upperLeftCorner = this.cameras.main.getWorldPoint(
       this.cameras.main.width * 0.2,
       this.cameras.main.height * 0.3
@@ -280,10 +271,7 @@ export class TownScene extends Scene {
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
     var scale = this.cameras.main.zoom;
-    var win=window as any;
-    var doc=document as any;
-    var rec : any,wave : any, recBlob: any;
-    var isRecording=false;
+
     var inputText = this.rexUI.add
       .inputText({
         x: x,
@@ -301,224 +289,6 @@ export class TownScene extends Scene {
       .setScale(1 / scale, 1 / scale)
       .setFocus()
       .setAlpha(0.8);
-    
-
-
-    
-      
-    var formatMs=function(ms:any,all?:any){
-      var f=Math.floor(ms/60000),m=Math.floor(ms/1000)%60;
-      var s=(all||f>0?(f<10?"0":"")+f+":":"")
-        +(all||f>0||m>0?("0"+m).substr(-2)+"″":"")
-        +("00"+ms%1000).substr(-3);
-      return s;
-    };
-   
-
-    
-    var recordBtn = this.rexUI.add
-    .label({
-      x: x,
-      y: y - 40, // 设置适当的位置
-      background: this.rexUI.add
-        .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-        .setStrokeStyle(2, COLOR_LIGHT),
-      text: this.add.text(0, 0, "Record"),
-      space: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
-      },
-    })
-    .setOrigin(0)
-    .setScale(1 / scale, 1 / scale)
-    .layout();
-    
-
-
-    
-   
-    /**暂停录音**/
-    function recPause() {
-      if(rec && Recorder.IsOpen()) {
-          rec.pause();
-      } else {
-        console.log("未打开录音", 1);
-      }
-    }
-
-    /**恢复录音**/
-    function recResume() {
-      if(rec && Recorder.IsOpen()) {
-          rec.resume();
-      } else {
-        console.log("未打开录音", 1);
-      }
-    }
-
-
-
-
-    // 检查rec是否已经被初始化
-    if (!rec) {
-      // 使用你给出的库初始化rec
-      rec = Recorder({
-          type: "mp3",
-          sampleRate: 16000,
-          bitRate: 16
-      });
-
-      // 打开录音设备
-      recOpen();
-    }
-    recordBtn.onClick(function() {
-     
-      
-      console.log("recordBtn.onClick");
-  
-      // 检查rec是否已经被初始化
-      if (!rec) {
-          // 使用你给出的库初始化rec
-          rec = Recorder({
-              type: "mp3",
-              sampleRate: 16000,
-              bitRate: 16
-          });
-  
-          // 打开录音设备
-          recOpen();
-      }
-  
-      if (!isRecording) {
-          recordBtn.getElement('text').setText('Stop');
-          console.log('!isRecording');
-  
-          recStart();
-  
-          isRecording = true;
-      } else {
-          console.log("Recording stopped");
-          recordBtn.getElement('text').setText('Record');
-  
-          recStop();
-          
-          isRecording = false;
-  
-          // 我们应该在 recStop 中处理 blob 和 buffer 的保存
-          // 因为recStop函数中的callback会收到这些数据
-      }
-  });
-  
-  /**调用open打开录音请求好录音权限**/
-  function recOpen() {
-    rec = null;
-    wave = null;
-    recBlob = null;
-
-    let newRec = Recorder({
-        type: "mp3",
-        sampleRate: 16000,
-        bitRate: 16,
-        onProcess: function(buffers: any, powerLevel: any, bufferDuration: any, bufferSampleRate: any, newBufferIdx: any, asyncEnd: any) {
-            // 录音实时回调，大约1秒调用12次本回调
-            document.querySelector(".recpowerx").style.width = powerLevel + "%";
-            document.querySelector(".recpowert").innerText = formatMs(bufferDuration, 1) + " / " + powerLevel;
-
-            // 可视化图形绘制
-            wave.input(buffers[buffers.length-1], powerLevel, bufferSampleRate);
-        }
-    });
-    newRec.open(function(){//打开麦克风授权获得相关资源
-     
-      
-      rec=newRec;
-      
-      // //此处创建这些音频可视化图形绘制浏览器支持妥妥的
-      // wave=Recorder.WaveView({elem:".recwave"});
-      
-      console.log("已打开录音，可以点击录制开始录音了",2);
-    },function(msg:any,isUserNotAllow:any){//用户拒绝未授权或不支持
-      console.log((isUserNotAllow?"UserNotAllow，":"")+"打开录音失败："+msg,1);
-    });
- }
-  
-    /**开始录音**/
-  function recStart() {
-  if(rec && Recorder.IsOpen()) {
-      recBlob = null;
-      rec.start();
-      console.log("已开始录音...");
-  } else {
-    console.log("未打开录音", 1);
-  }
-};
-
-  
-  /**结束录音**/
-  function recStop() {
-      if(!(rec&&Recorder.IsOpen())){
-        console.log("未打开录音",1);
-        return;
-      };
-      // rec.stop(function(blob:any,duration:any){
-      //   console.log(blob,(win.URL||webkitURL).createObjectURL(blob),"时长:"+duration+"ms");
-        
-      //   recBlob=blob;
-      //   console.log("已录制mp3："+formatMs(duration)+"ms "+blob.size+"字节，可以点击播放、上传了",2);
-      // },function(msg:any){
-      //   console.log("录音失败:"+msg,1);
-      // });
-      rec.stop(function(blob, duration) {
-    
-          if (!blob) {
-              console.error('Received blob is null or undefined');
-              return;
-          } else {
-              console.log("sending data to backend");
-              const blobSize = blob.size;
-              console.log(`Blob size: ${blobSize} bytes`);
-      
-          }
-  
-          // 创建一个 FormData 对象并附加 blob
-          let formData = new FormData();
-          //声明了audio，sender，receiver_id，receiver为独立参数
-          formData.append('file', blob, 'test.wav');
-          formData.append('sender', 'Brendan');
-          formData.append('receiver_id', (npc as NPC).id.toString());  // 如果id是一个数字，请确保转换为字符串
-          formData.append('receiver', (npc as NPC).name);
-          // 使用 FormData 对象发送请求
-          fetch("http://127.0.0.1:10002/record_log", {
-            method: "POST",
-            credentials: "same-origin",
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            var content = JSON.parse(data.content);
-            var responseBox = this.createTextBox()
-                .start(content.text, 25)
-                .on("complete", () => {
-                    this.enableKeyboard();
-                    this.input.keyboard.on("keydown", () => {
-                        responseBox.destroy();
-                        this.input.keyboard.off("keydown");
-                        (npc as NPC).setTalking(false);
-                    });
-                });
-        })
-        .catch(error => {
-            console.error("录音失败:", error.message);
-        });
-        
-  })
-  }
 
     const self = this;
     var submitBtn = this.rexUI.add

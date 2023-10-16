@@ -48,7 +48,7 @@ class UI:
         self.text_now = None
         self.tot_solutions = 5
         self.solution_status = [False] * self.tot_solutions
-        print('In Ui init')
+
     def get_avatar(self, idx):
         if idx == -1:
             img = cv2.imread("./imgs/db_diag/-1.png")
@@ -373,7 +373,6 @@ class UI:
         :param message: message
         :return: [new image, new message]
         """
-        print('in submit ----------')
         self.backend.submit(message)
         self.messages.append((-1, f"[User]: {message}"))
         return self.gen_img([{"message": ""}] * len(self.agent_id)), self.gen_message()
@@ -382,7 +381,6 @@ class UI:
         """
         start a frontend
         """
-        print('in UI launch')
         with gr.Blocks() as demo:
             with gr.Row():
                 with gr.Column():
@@ -412,7 +410,6 @@ class UI:
             # stu_num = self.stu_num
 
             if self.task == "db_diag":
-                
                 user_msg = gr.Textbox()
                 submit_btn = gr.Button("Submit", variant="primary")
 
@@ -485,6 +482,6 @@ class UI:
                 ],
                 show_progress=False,
             )
-        print('finish UI launch')
+
         demo.queue(concurrency_count=5, max_size=20).launch()
         # demo.launch()

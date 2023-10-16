@@ -3,7 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import serve from 'rollup-plugin-serve';
 import typescript from '@rollup/plugin-typescript';
-
+import nodeGlobals from 'rollup-plugin-node-globals';
 
 export default {
 
@@ -47,7 +47,11 @@ export default {
         commonjs({
             include: [
                 'node_modules/eventemitter3/**',
-                'node_modules/phaser/**'
+                'node_modules/phaser/**',
+                'node_modules/Recorderjs/**',
+                'node_modules/recorder-js/**',
+                'node_modules/inline-worker/**',
+                'node_modules/recorder-core/**'
             ],
             exclude: [ 
                 'node_modules/phaser/src/polyfills/requestAnimationFrame.js',
@@ -69,7 +73,9 @@ export default {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
-        })
+        }),
+
+        nodeGlobals()
 
     ]
 };

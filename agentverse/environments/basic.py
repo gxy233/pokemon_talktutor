@@ -50,7 +50,7 @@ class BasicEnvironment(BaseEnvironment):
 
     async def step(self) -> List[Message]:
         """Run one step of the environment"""
-
+        print(' in agentverse/environments/basic.py step func')
         # Get the next agent index
         agent_ids = self.rule.get_next_agent_idx(self)
 
@@ -61,18 +61,19 @@ class BasicEnvironment(BaseEnvironment):
         messages = await asyncio.gather(
             *[self.agents[i].astep(env_descriptions[i]) for i in agent_ids]
         )
-
+        print('Generate the next message finished')
+        
         # Some rules will select certain messages from all the messages
         selected_messages = self.rule.select_message(self, messages)
         self.last_messages = selected_messages
         self.print_messages(selected_messages)
-
+        print('Some rules will select certain messages from all the messages finished')
         # Update the memory of the agents
         self.rule.update_memory(self)
-
+        print('Update the memory of the agents finished')
         # Update the set of visible agents for each agent
         self.rule.update_visible_agents(self)
-
+        print('Update the set of visible agents for each agent finished')
         self.cnt_turn += 1
 
         return selected_messages

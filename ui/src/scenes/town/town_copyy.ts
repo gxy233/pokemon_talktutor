@@ -485,41 +485,51 @@ export class TownScene extends Scene {
           let formData = new FormData();
           //声明了audio，sender，receiver_id，receiver为独立参数
           formData.append('file', blob, 'test.wav');
-          formData.append('sender', 'Brendan');
-          formData.append('receiver_id', (npc as NPC).id.toString());  // 如果id是一个数字，请确保转换为字符串
-          formData.append('receiver', (npc as NPC).name);
           // 使用 FormData 对象发送请求
           fetch("http://127.0.0.1:10002/record_log", {
-            method: "POST",
-            credentials: "same-origin",
-            body: formData
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+})
+.then(data => {
+    const recognizedText = data.recognized_text;
+    // 用识别出的文字再次请求服务器
+    return fetch("http://127.0.0.1:10002/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+            content: recognizedText,
+            sender: "Brendan",
+            receiver_id: (npc as NPC).id,
+            receiver: (npc as NPC).name,
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            var content = JSON.parse(data.content);
-            var responseBox = this.createTextBox()
-                .start(content.text, 25)
-                .on("complete", () => {
-                    this.enableKeyboard();
-                    this.input.keyboard.on("keydown", () => {
-                        responseBox.destroy();
-                        this.input.keyboard.off("keydown");
-                        (npc as NPC).setTalking(false);
-                    });
-                });
-        })
-        .catch(error => {
-            console.error("录音失败:", error.message);
+    });
+})
+.then(response => response.json())
+.then(data => {
+    var content = JSON.parse(data.content);
+    var responseBox = this.createTextBox()
+      .start(content.text, 25)
+      .on("complete", () => {
+        this.enableKeyboard();
+        this.input.keyboard.on("keydown", () => {
+          responseBox.destroy();
+          this.input.keyboard.off("keydown");
+          (npc as NPC).setTalking(false);
         });
-        
-  })
-  }
-
+      });
+})
+.catch(console.error);})}
+  
     const self = this;
     var submitBtn = this.rexUI.add
       .label({
