@@ -1,7 +1,7 @@
-<h1 align="center"> 🤖 AgentVerse 🪐 </h1>
+<h1 align="center"> 🤖 pokemon_talktutor 🪐 </h1>
 
 <h3 align="center">
-    <p>A Framework for Multi-LLM Environment Simulation</p>
+    <p>Talk to the Pokémon characters</p>
 </h3>
 <p align="center">
     <a href="https://github.com/OpenBMB/AgentVerse/blob/main/LICENSE">
@@ -12,114 +12,22 @@
     </a>
 </p>
 
-<p align="center">
-<img src="./imgs/title.png" width="512">
-</p>
 
 <p align="center">
     【English | <a href="README_zh.md">Chinese</a>】
 </p>
 
-**AgentVerse** offers a versatile framework that streamlines the process of creating custom multi-agent environments for large language models (LLMs). Designed to facilitate swift development and customization with minimal effort, our framework empowers researchers to concentrate on their research, rather than being bogged down by implementation details.
+**pokemon_talktutor** is an extension of **Agentverse** 
 
 ---
 
-## ✨ Features
-
-- 🥳 **Efficient Environment Building:** Our framework provides a collection of essential building blocks for effortlessly creating a multi-agent environment. With only a few lines in a configuration file, you can easily construct basic environments such as a chat room for LLMs. This process entails defining the environment's settings and prompts for LLMs, enabling researchers like you to concentrate on experimentation and analysis.
-
-- ⚙️ **Customizable Components**: AgentVerse simplifies the multi-agent environment by dividing it into five functional modules and defining their respective interfaces. For complex environments that cannot be constructed directly using the basic modules offered in AgentVerse, you can customize one or more of the interfaces within these five functional modules to efficiently create your own multi-agent environment according to your requirements.
-
-- 🛠 **Tools (Plugins) Utilization**: AgentVerse supports the multi-agent environments with tools. Currently, AgentVerse supports tools provided in [BMTools](https://github.com/OpenBMB/BMTools). 
-
-## 📰 What's New
-- [2023/8/22] 📝 We're excited to share our work-in-progress paper [AgentVerse: Facilitating Multi-Agent Collaboration and Exploring Emergent Behaviors in Agents](https://arxiv.org/abs/2308.10848) related to this repository.
-<img width="616" alt="Screen Shot 2023-09-01 at 12 08 57 PM" src="https://github.com/OpenBMB/AgentVerse/assets/11704492/6db1c907-b7fc-42f9-946c-89853a28f386">
-
-You could refer the stay-tuned code in this [branch](https://github.com/OpenBMB/AgentVerse/tree/AgentVerse-TaskSolving).
-
-- [2023/6/5] 🎉 We are thrilled to present an array of [demos](#-simple-demo-video), including [NLP Classroom](#nlp-classroom), [Prisoner Dilemma](#prisoner-dilemma), [Software Design](#software-design), [Database Administrator](#database-administrator-dba), and a simple [H5 Pokemon Game](#pokemon) that enables the interaction with the characters in Pokemon! Try out these demos and have fun!
-- [2023/5/1] 🚀 [AgentVerse](https://github.com/OpenBMB/AgentVerse) is officially launched!
-
-## 🌟 Join Us!
-AgentVerse is on a mission to revolutionize the multi-agent environment for large language models, and we're eagerly looking for passionate collaborators to join us on this exciting journey.
-### How Can You Contribute?
-- **Code Development**: If you're an engineer, help us refine, optimize, and expand the current framework. We're always looking for talented developers to enhance our existing features and develop new modules.
-
-- **Documentation and Tutorials**: If you have a knack for writing, help us improve our documentation, create tutorials, or write blog posts to make AgentVerse more accessible to the broader community.
-
-- **Application Exploration**: If you're intrigued by multi-agent applications and are eager to experiment using AgentVerse, we'd be thrilled to support your journey and see what you create!
-
-- **Feedback and Suggestions**: Use AgentVerse and provide us with feedback. Your insights can lead to potential improvements and ensure that our framework remains top-notch.
-
-Also, if you're passionate about advancing the frontiers of multi-agent environments and are eager to dive deeper into research, we invite you to join our team at THUNLP. To explore this exciting opportunity and embark on a collaborative journey with us, please reach out to [chenweize1998@gmail.com](chenweize1998@gmail.com) and [yushengsu.thu@gmail.com](yushengsu.thu@gmail.com) and express your interest. We're keen to welcome motivated individuals like you to our lab!
-
-## 🗓 Coming Soon
-- [ ] Code release of our [paper](https://arxiv.org/abs/2308.10848)
-- [ ] Add documentation
-- [ ] Support more sophisticated memory for conversation history
-- [ ] Add support for local LLM
-- [ ] Auto-generate UI based on the given multi-agent environment
-
-
 ## 👾 Simple Demo Video
 
-We demonstrate the following cases that are expertly crafted by AgentVerse.
-<!--
-### [![Demo video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/9JCVfzMFhaM)
--->
+We demonstrate the following cases.
+
 <!--![image](imgs/multiagent-min.gif)-->
 
-<!-- - **NLP Classroom**: -->
 
-#### NLP Classroom
-In the NLP class, the professor and students engage in interactive communication. When students have a question, they raise their hands and patiently wait for the professor to call on them. Only after being called on by the professor, can students speak and ask their questions.
-
-Use the following command to launch the NLP Classroom example:
-```bash
-python main_demo.py --task nlp_classroom_9players
-```
-
-https://github.com/OpenBMB/AgentVerse/assets/11704492/6ea07850-595e-4a28-a82e-f863011353c2
-
-
-#### Prisoner Dilemma
-A prisoner's Dilemma is a thought experiment that challenges two completely rational agents to a dilemma: they can cooperate with their partner for mutual benefit or betray their partner ("defect") for individual reward.
-
-Use the following command to launch the Prisoner Dilemma example:
-```bash
-python main_demo.py --task prisoner_dilemma
-```
-
-https://github.com/OpenBMB/AgentVerse/assets/11704492/017c46e5-c738-4fca-9352-b008e2d518bd
-
-
-#### Software Design
-In the Software Design example, a code writer, a code tester and a code reviewer collaborate on the code generation problem. Given a problem, the code writer first composes the code implementation. The code tester runs the unit tests and provides the feedback. The code viewer then generates a review. After collecting the test feedback and review, the code writer iteratively refines the code.
-
-Use the following command to launch the Software Design example:
-```bash
-python main_demo.py --task sde_team/sde_team_2players
-```
-
-https://github.com/OpenBMB/AgentVerse/assets/11704492/5058066a-abee-490d-8659-b4e54661626a
-
-
-#### [Database Administrator (DBA)](https://github.com/TsinghuaDatabaseGroup/DB-GPT)
-
-In the database diagnosis scenario, the Chief DBA monitors the system anomalies (e.g., slow queries, locks, crash down). If detected, the domain experts are alerted to analyze root causes, share insights, and suggest optimization solutions together. The Chief DBA then provides a summarized report to the user.
-
-```bash
-python main_demo.py --task db_diag
-```
-
-https://github.com/OpenBMB/AgentVerse/assets/11704492/c633419d-afbb-47d4-bb12-6bb512e7af3a
-
-#### [Text Evaluation (ChatEval)](https://github.com/chanchimin/ChatEval)
-In the context of the text evaluation scenario, we recommend users explore the [ChatEval](https://github.com/chanchimin/ChatEval) repo. They've implemented a multi-agent referee team on AgentVerse to assess the quality of text generated by different models. When given two distinct pieces of text, roles within ChatEval can autonomously debate the nuances and disparities, drawing upon their assigned personas, and subsequently provide their judgments. Experiments indicate that their referee team, enriched with diverse roles specified in [config.yaml](#2-configuring-the-agents), aligns more closely with human evaluations. This demo is built upon the [Fastchat](https://github.com/lm-sys/FastChat) repo, and we'd like to express our appreciation for their foundational work.
-
-
-https://github.com/OpenBMB/AgentVerse/assets/75533759/58f33468-f15b-4bac-ae01-8d0780019f85
 
 #### Pokemon
 In the game, agents can visit shops, train their Pokémon at the gym, and interact with one another. As a player, you take on the role of an agent and can engage with others at any time. There are 6 characters in the Pokémon environment who appeared in Pokemon Emerald: [May](https://bulbapedia.bulbagarden.net/wiki/May_(game)), [Professor Birch](https://bulbapedia.bulbagarden.net/wiki/Professor_Birch), [Steven Stone](https://bulbapedia.bulbagarden.net/wiki/Steven_Stone), [Maxie](https://bulbapedia.bulbagarden.net/wiki/Maxie), [Archie](https://bulbapedia.bulbagarden.net/wiki/Archie) and [Joseph](https://bulbapedia.bulbagarden.net/wiki/Mr._Stone). 
@@ -141,40 +49,6 @@ Wait for the compilation to complete, and have fun! (WASD for moving around, and
 
 https://github.com/OpenBMB/AgentVerse/assets/11704492/4d07da68-f942-4205-b558-f155e95782e7
 
-
-
-## Contents
-
-- [✨ Features](#-features)
-- [📰 What's New](#-whats-new)
-- [🌟 Join Us!](#-join-us)
-  - [How Can You Contribute?](#how-can-you-contribute)
-- [🗓 Coming Soon](#-coming-soon)
-- [👾 Simple Demo Video](#-simple-demo-video)
-    - [NLP Classroom](#nlp-classroom)
-    - [Prisoner Dilemma](#prisoner-dilemma)
-    - [Software Design](#software-design)
-    - [Database Administrator (DBA)](#database-administrator-dba)
-    - [Text Evaluation (ChatEval)](#text-evaluation-chateval)
-    - [Pokemon](#pokemon)
-- [Contents](#contents)
-- [🚀 Getting Started](#-getting-started)
-  - [Installation](#installation)
-  - [CLI Example](#cli-example)
-  - [Local Website Demo](#local-website-demo)
-- [💡 Philosophy](#-philosophy)
-  - [Environment](#environment)
-  - [Agent](#agent)
-- [✍️ Customize Your Own Environment](#️-customize-your-own-environment)
-  - [A Simple Example: Building a Classroom Environment](#a-simple-example-building-a-classroom-environment)
-      - [1. Creating a Task Directory and Configuring the Environment](#1-creating-a-task-directory-and-configuring-the-environment)
-      - [2. Configuring the Agents](#2-configuring-the-agents)
-      - [3. Writing an Output Parser](#3-writing-an-output-parser)
-  - [Customization Guide for More Complex Environments](#customization-guide-for-more-complex-environments)
-- [🔎 Examples](#-examples)
-- [Star History](#star-history)
-- [Citation](#citation)
-- [Contact](#contact)
 
 
 
@@ -372,10 +246,4 @@ If you find this repo helpful, feel free to cite us.
       primaryClass={cs.CL}
 }
 ```
-
-## Contact
-
-Weize Chen: chenwz21@mails.tsinghua.edu.cn
-
-[Yusheng Su](https://yushengsu-thu.github.io/): yushengsu.thu@gmail.com
 
