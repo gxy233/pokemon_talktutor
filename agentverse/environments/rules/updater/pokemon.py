@@ -16,6 +16,8 @@ if TYPE_CHECKING:
 class PokemonUpdater(BasicUpdater):
     def update_memory(self, environment: PokemonEnvironment):
         for message in environment.last_messages:
+            # print(f'&&&&&&&&&&&&&&&&&&&&&&&&&&{message=}')
+            
             if message.content == "":
                 continue
             message = deepcopy(message)

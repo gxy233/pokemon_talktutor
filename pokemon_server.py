@@ -50,6 +50,8 @@ def health_check():
 @app.post("/chat")
 def chat(message: UserRequest):
     content = message.content
+    #去除引号，引起未知错误
+    content = content.strip('"')
     receiver = message.receiver
     receiver_id = message.receiver_id
     response = agent_verse.next(
@@ -107,17 +109,17 @@ def record_log(
         # 使用Whisper模型将音频转换为文本
         recognized_text = audio_to_text(file_location)
         
-        content = recognized_text
-        receiver = receiver
-        receiver_id = receiver_id
-        response = agent_verse.next(
-            is_player=True,
-            player_content=content,
-            receiver=receiver,
-            receiver_id=receiver_id,
-        )
-        print(f'tttttttttttttt {response[0].dict()=}')
-        return response[0].dict()
+        # content = recognized_text
+        # receiver = receiver
+        # receiver_id = receiver_id
+        # response = agent_verse.next(
+        #     is_player=True,
+        #     player_content=content,
+        #     receiver=receiver,
+        #     receiver_id=receiver_id,
+        # )
+        # print(f'tttttttttttttt {response[0].dict()=}')
+        return recognized_text
         
         # return {"recognized_text": recognized_text}
     except Exception as e:

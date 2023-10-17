@@ -498,20 +498,24 @@ export class TownScene extends Scene {
             if (!response.ok) {
                 throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
             }
-            return response.json();
+            // return response.json();
+            return response.text();
         })
         .then(data => {
-            var content = JSON.parse(data.content);
-            var responseBox = this.createTextBox()
-                .start(content.text, 25)
-                .on("complete", () => {
-                    this.enableKeyboard();
-                    this.input.keyboard.on("keydown", () => {
-                        responseBox.destroy();
-                        this.input.keyboard.off("keydown");
-                        (npc as NPC).setTalking(false);
-                    });
-                });
+            console.log(`Received string: ${data}`);
+        
+            // 设置文本框内容为从服务器返回的字符串
+            inputText.setText(data);
+            // var responseBox = this.createTextBox()
+            //     .start(content.text, 25)
+            //     .on("complete", () => {
+            //         this.enableKeyboard();
+            //         this.input.keyboard.on("keydown", () => {
+            //             responseBox.destroy();
+            //             this.input.keyboard.off("keydown");
+            //             (npc as NPC).setTalking(false);
+            //         });
+            //     });
         })
         .catch(error => {
             console.error("录音失败:", error.message);
@@ -566,9 +570,11 @@ export class TownScene extends Scene {
       event: Phaser.Types.Input.EventData
     ) {
       let text = inputText.text;
+      console.log('get text in submitbtn:',text)
       inputText.destroy();
       gameObject.destroy();
       cancelBtn.destroy();
+      recordBtn.destroy();
       self.submitPrompt(text, npc);
     });
 
